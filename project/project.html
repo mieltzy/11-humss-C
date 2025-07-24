@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="project.css">
+  <title>ConfessMo.</title>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">ConfessMo.</div>
+    <div class="nav-center"><a href="#" class="nav-link">Home</a></div>
+  </nav>
+
+  <div class="main">
+    <div class="intro">
+      <h2>ConfessMo.</h2>
+      <p>Share your thoughts, feelings, and emotions. Whether it's a secret, 
+        a crush, a rant, or something you've been holding in for a while.</p>
+    
+        <button href="about" class="confess-btn">Confess!</button>
+    </div>
+
+    <div class="intro2">
+      <span>Powered by Spotify</span>
+      <img src="asset/logo.jpg" alt="Spotify Logo">
+    </div>
+    </div>
+    <div class="hearts-container"></div>
+
+    <section id="about" class="second-page">
+  <div class="confess-container">
+    <h2>I ConfessMo. na 'yan.</h2>
+    <form class="confess-form">
+      <textarea placeholder="Type your confession here..."></textarea>
+      <label for="spotifySearch">Search for a song:</label>
+<input
+  type="text"
+  id="spotifySearch"
+  placeholder="Type a song name..."
+  oninput="searchSpotifyTrack()"
+/>
+<div id="spotifyResults"></div>
+<div id="spotifyEmbed" style="margin-top: 20px;"></div>
+
+
+<!-- Hidden field to save selected track URI -->
+<input type="hidden" name="selectedTrack" id="selectedTrack" />
+
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</section>
+<section id="messagesPage" class="third-page">
+  <div class="messages-container">
+    <h2>💌 Confessions Received</h2>
+    <div id="messagesList"></div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="footer-content">
+    <p>&copy; 2025 ConfessMo. | Made with 🤎 and created by <strong>Miel</strong></p>
+    <p>Follow me: 
+      <a href="https://www.facebook.com/hzyxmi" target="_blank">Facebook</a> | 
+      <a href="https://www.instagram.com/hzyx.mi?igsh=YzljYTk1ODg3Zg==" target="_blank">Instagram</a> | 
+      <a href="https://x.com/mielbacton?t=5OEJyoTOCkHcEEZa-WuWLQ&s=09" target="_blank">Twitter</a>
+    </p>
+  </div>
+</footer>
+
+<script src="hearts.js"></script>
+</body>
+</html>
