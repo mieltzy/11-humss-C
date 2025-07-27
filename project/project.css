@@ -30,7 +30,7 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   backdrop-filter: blur(10px);
   z-index: 1000;
-  flex-wrap: nowrap; /* This ensures horizontal layout only */
+  flex-wrap: nowrap;
   box-sizing: border-box;
 }
 
@@ -46,6 +46,14 @@ body {
   justify-content: center;
   align-items: center;
   white-space: nowrap;
+  font-weight: 500;
+}
+. nav-center1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  whitespace: nowrap;
+  font-weight: 500;
 }
 
 .nav-link {
