@@ -21,9 +21,8 @@ function createHearts() {
 }
 setInterval(createHearts, 1200);
 
-// 🎵 SPOTIFY INTEGRATION
+// 🔐 SPOTIFY
 let token = "";
-
 async function getSpotifyToken() {
   const client_id = "5f66fa55d9f140d29d14ea5802f7d409";
   const client_secret = "b8a13c94d62b4287998af0d4beb6f512";
@@ -102,11 +101,10 @@ async function searchSpotifyTrack() {
   }
 }
 
-// ✅ FIREBASE IMPORTS
+// ✅ FIREBASE
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ✅ FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCdKSva31GhGNYof_cC0ApGOhBLIO1rEZ0",
   authDomain: "confessmo-a877a.firebaseapp.com",
@@ -119,66 +117,132 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
-// ✉️ CONFESSION SUBMIT (Firebase only)
-document.querySelector(".confess-form").addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const message = this.querySelector("textarea").value.trim();
-  const song = document.getElementById("selectedTrack").value;
-
-  if (!message) return;
-
-  const entry = {
-    message,
-    song,
-    time: new Date().toLocaleString()
-  };
-
-  await push(ref(db, "confessions"), entry);
-
-  alert("Confession sent successfully!");
-  this.reset();
-  document.getElementById("spotifyEmbed").innerHTML = "";
-  document.getElementById("messagesPage")?.scrollIntoView({ behavior: "smooth" });
-});
-
-// 📥 FETCH FROM FIREBASE
-function loadConfessions() {
-  const list = document.getElementById("messagesList");
-  const confessRef = ref(db, "confessions");
-
-  onValue(confessRef, (snapshot) => {
-    list.innerHTML = "";
-    const data = snapshot.val();
-    if (data) {
-      Object.values(data).reverse().forEach(entry => {
-        const card = document.createElement("div");
-        card.className = "message-card";
-
-        card.innerHTML = `
-          <p>${entry.message}</p>
-          ${entry.song ? `
-            <div class="spotify-embed">
-              <iframe style="border-radius:12px"
-                src="https://open.spotify.com/embed/track/${extractSpotifyID(entry.song)}?utm_source=generator&theme=0"
-                width="100%" height="80" frameborder="0"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                loading="lazy">
-              </iframe>` : ""}
-          <small style="display:block; margin-top:10px; color:#888;">🕒 ${entry.time}</small>
-        `;
-        list.appendChild(card);
-      });
-    }
-  });
-}
+const confessionsRef = ref(db, "confessions");
 
 function extractSpotifyID(url) {
   const match = url.match(/track\/([a-zA-Z0-9]+)/);
   return match ? match[1] : null;
 }
 
-// ⏬ Load messages on page load
-window.addEventListener("DOMContentLoaded", loadConfessions);
-document.getElementById("spotifySearch").addEventListener("input", searchSpotifyTrack);
+function loadConfessions() {
+  const track = document.querySelector(".message-track");
+
+  onValue(confessionsRef, (snapshot) => {
+    track.innerHTML = "";
+
+    const data = snapshot.val();
+    if (data) {
+      const reversed = Object.values(data).reverse();
+
+      reversed.forEach(entry => {
+        const scrollCard = createScrollingCard(entry.message, entry.song);
+        track.appendChild(scrollCard);
+      });
+
+      reversed.forEach(entry => {
+        const cloneCard = createScrollingCard(entry.message, entry.song);
+        track.appendChild(cloneCard);
+      });
+    }
+  });
+}
+
+function animateCount(targetCount) {
+  const counter = document.getElementById("confessionCount");
+  let current = parseInt(counter.textContent) || 0;
+
+  const step = () => {
+    current += Math.ceil((targetCount - current) / 12);
+    if (current >= targetCount) {
+      counter.textContent = targetCount;
+    } else {
+      counter.textContent = current;
+      requestAnimationFrame(step);
+    }
+  };
+
+  requestAnimationFrame(step);
+}
+
+onValue(confessionsRef, (snapshot) => {
+  const count = snapshot.size || Object.keys(snapshot.val() || {}).length;
+  animateCount(count);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadConfessions();
+  document.getElementById("spotifySearch").addEventListener("input", searchSpotifyTrack);
+  document.querySelector(".confess-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const message = this.querySelector("textarea").value.trim();
+    const song = document.getElementById("selectedTrack").value;
+
+    if (!message) return;
+
+    const entry = {
+      message,
+      song,
+      time: new Date().toLocaleString()
+    };
+
+    await push(ref(db, "confessions"), entry);
+
+    alert("Confession sent successfully!");
+    this.reset();
+    document.getElementById("spotifyEmbed").innerHTML = "";
+  });
+
+  fetch('./navbar.html')
+    .then(response => response.text())
+    .then(html => {
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      const nav = temp.querySelector('nav');
+      if (nav) {
+        document.getElementById('navbar').appendChild(nav);
+        console.log('✅ Navbar fetched and inserted');
+      } else {
+        console.warn('⚠️ No <nav> tag found in navbar.html');
+      }
+    })
+    .catch(error => {
+      console.error('❌ Failed to load navbar:', error);
+    });
+
+  fetch('./footer.html')
+    .then(response => response.text())
+    .then(html => {
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      const footer = temp.querySelector('footer');
+      if (footer) {
+        document.getElementById('footer').appendChild(footer);
+        console.log('✅ Footer fetched and inserted');
+      } else {
+        console.warn('⚠️ No <footer> tag found in footer.html');
+      }
+    })
+    .catch(error => {
+      console.error('❌ Failed to load footer:', error);
+    });
+});
+
+function createScrollingCard(message, songURL) {
+  const card = document.createElement('div');
+  card.className = 'message-card';
+  const songID = extractSpotifyID(songURL);
+
+  card.innerHTML = `
+    <div class="top-bar">
+      <span class="logo">ConfessMo.</span>
+    </div>
+    <div class="message">"${message}"</div>
+    ${songID ? `
+      <div class="spotify-embed">
+        <iframe src="https://open.spotify.com/embed/track/${songID}" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
+      </div>` : ""}
+    <div class="signature">Made with 🤎 by ConfessMo.</div>
+  `;
+  return card;
+}
