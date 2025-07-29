@@ -4,24 +4,13 @@
   <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="footer.css">
   <link rel="stylesheet" href="project.css">
   <title>ConfessMo.</title>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">ConfessMo.</div>
-
-    <div class="nav-center">
-        <a href="#" class="nav-link">Home</a>
-    </div>
-    <div class="nav-center1">
-      <a href="html3.html" class="nav-link">Confessions</a>
-    </div>
-
-    <div class="search-bar">
-        <input type="text" placeholder="Search Name.." id="search-input">
-    </div>
-  </nav>
+  <div id="navbar"></div>
 
   <div class="main">
     <div class="intro">
@@ -42,103 +31,66 @@
     <section id="about" class="second-page">
   <div class="confess-container">
     
+    <!-- 🚫 SCROLLING AREA (Only messages) -->
     <div class="message-scroller">
-      <div class="message-track">
-        <div class="message-card">
-           "I loved you silently when you didn’t even notice me."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/7vWHppvllFJXdXf0xplZum" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "Bakit siya pa rin kahit ang sakit sakit na?"
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/1HNkqx9Ahdgi1Ixy2xkKkL" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "You promised you'd stay, but now I talk to the sky."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/4cBm8rv2B5BJWU2pDaHVbF" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "I’m smiling, but deep down, I’m breaking."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/3ebXp4osCnAAuvDDqh8aAK" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "You loved me when it was easy. Then you left when it got hard."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/3YRCqOhFifThpSRFJ1VWFM" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "Ang sakit magmahal ng taong di ka kayang ipaglaban."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/0ofHAoxe9vBkTCp2UQIavz" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <!-- 🔁 Repeat exact messages for smooth infinite scroll -->
-        <div class="message-card">
-          "I loved you silently when you didn’t even notice me."
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/0D1ecMMsSIpJbjPoJMHGkV" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
-        <div class="message-card">
-          "Bakit siya pa rin kahit ang sakit sakit na?"
-          <div class="spotify-embed">
-            <iframe src="https://open.spotify.com/embed/track/0D1ecMMsSIpJbjPoJMHGkV" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe>
-          </div>
-        </div>
-
+      <div class="message-track" id="messagesTrack">
+        <!-- message cards will go here dynamically -->
       </div>
     </div>
+    <!-- ✅ NEW POSTCARD-STYLE FORM -->
+<h2>I ConfessMo. na 'yan.</h2>
 
-    <!-- ✍️ Confession Form -->
-    <h2>I ConfessMo. na 'yan.</h2>
-    <form class="confess-form">
-      <textarea placeholder="Type your confession here..."></textarea>
-      <label for="spotifySearch">Search for a song:</label>
-      <input
-        type="text"
-        id="spotifySearch"
-        placeholder="Type a song name..."
-      />
-      <div id="spotifyResults"></div>
-      <div id="spotifyEmbed" style="margin-top: 20px;"></div>
-      <input type="hidden" name="selectedTrack" id="selectedTrack" />
-      <button type="submit">Submit</button>
-    </form>
+<form class="confess-form postcard-form">
+  <div class="top-row">
+    <label>From: <input type="text" name="from" placeholder="(Optional)"></label>
+    <label>To: <input type="text" name="to" placeholder="(Optional)"></label>
+  </div>
+
+  <div class="form-body">
+    <label for="message">Message:</label>
+    <textarea id="message" placeholder="Type your confession here..."></textarea>
+  </div>
+
+  <div class="bottom-row">
+    <label for="spotifySearch">Spotify music:</label>
+    <input id="spotifySearch" type="text" placeholder="Search a song..." />
+    <div id="spotifyResults"></div>
+    <div id="spotifyEmbed" style="margin-top: 20px;"></div>
+    <input type="hidden" name="selectedTrack" id="selectedTrack" />
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+
 
   </div>
 </section>
+<section id="counter-section" class="confession-counter-section">
+  <!-- 🌟 Total Confession Counter -->
+  <div class="envelope-container">
+    <!-- Hearts -->
+    <div class="heart-float"></div>
+    <div class="heart-float"></div>
+    <div class="heart-float"></div>
+    <div class="heart-float"></div>
+    <div class="heart-float"></div>
 
-<section id="messagesPage" class="third-page">
-  <div class="messages-container">
-    <h2>💌 Confessions Received</h2>
-    <div id="messagesList"></div>
+    <!-- Confession Card -->
+    <div class="confession-card">
+      <p class="title">Total Confessions:</p>
+      <p class="counter" id="confessionCount">0</p>
+    </div>
+
+    <!-- Envelope -->
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="stripes"></div>
+    </div>
   </div>
 </section>
-<footer class="site-footer">
-  <div class="footer-content">
-    <p>&copy; 2025 ConfessMo. | Made with 🤎 and created by <strong>Miel</strong></p>
-    <p>Follow me: 
-      <a href="https://www.facebook.com/hzyxmi" target="_blank">Facebook</a> | 
-      <a href="https://www.instagram.com/hzyx.mi?igsh=YzljYTk1ODg3Zg==" target="_blank">Instagram</a> | 
-      <a href="https://x.com/mielbacton?t=5OEJyoTOCkHcEEZa-WuWLQ&s=09" target="_blank">Twitter</a>
-    </p>
-  </div>
-</footer>
+
+  
+  <div id="footer"></div>
 
 <script type="module" src="hearts.js"></script>
 </body>
